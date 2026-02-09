@@ -94,25 +94,32 @@ const getLocationFromHash = (): Location | null => {
   return null;
 };
 
+const extractFirstString = ({ result }: { result: unknown }): string | null => {
+  if (!Array.isArray(result) || !Array.isArray(result[0])) return null;
+  const firstValue = result[0][0];
+  return typeof firstValue === "string" ? firstValue : null;
+};
+
 const queryPageTitle = async ({ uid }: { uid: string }): Promise<string | null> => {
-  const pageResult = await window.roamAlphaAPI.q<[[string]]>(`
+  const pageResult = await window.roamAlphaAPI.q(`
     [:find ?title
      :where [?e :block/uid "${uid}"]
             [?e :node/title ?title]]
   `);
 
-  return pageResult?.[0]?.[0] || null;
+  return extractFirstString({ result: pageResult });
 };
 
 const queryBlockString = async ({ uid }: { uid: string }): Promise<string | null> => {
-  const blockResult = await window.roamAlphaAPI.q<[[string]]>(`
+  const blockResult = await window.roamAlphaAPI.q(`
     [:find ?string
      :where [?e :block/uid "${uid}"]
             [?e :block/string ?string]]
   `);
 
-  if (!blockResult?.length) return null;
-  return blockResult[0][0] || "(empty block)";
+  const blockString = extractFirstString({ result: blockResult });
+  if (blockString === null) return null;
+  return blockString || "(empty block)";
 };
 
 const getBreadcrumbItemByUid = async ({ uid }: { uid: string }): Promise<BreadcrumbItem | null> => {
