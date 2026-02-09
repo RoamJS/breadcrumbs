@@ -55,6 +55,7 @@ const UI_SELECTORS = {
 let breadcrumbHistory: BreadcrumbItem[] = [];
 let currentLocation: Location | null = null;
 let hashChangeListener: (() => void) | null = null;
+let navigationSeq = 0;
 
 const parsePositiveInteger = ({
   value,
@@ -284,12 +285,14 @@ const handleNavigation = async ({
   maxBreadcrumbs,
   truncateLength,
 }: ExtensionSettings): Promise<void> => {
+  const mySeq = ++navigationSeq;
   const location = getLocationFromHash();
   if (!location) return;
 
   if (currentLocation?.uid === location.uid) return;
 
   const breadcrumbItem = await getBreadcrumbItemByUid({ uid: location.uid });
+  if (mySeq !== navigationSeq) return;
   if (!breadcrumbItem) return;
 
   updateBreadcrumbHistory({ item: breadcrumbItem, maxBreadcrumbs });
@@ -398,6 +401,7 @@ const cleanup = (): void => {
 
   breadcrumbHistory = [];
   currentLocation = null;
+  navigationSeq = 0;
 };
 
 export default runExtension(async ({ extensionAPI }) => {
