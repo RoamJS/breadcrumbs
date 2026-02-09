@@ -1,0 +1,42 @@
+name: Publish Early Access
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to build (branch, tag, or SHA)"
+        required: false
+        default: "main"
+      channel:
+        description: "Early access channel path under /releases/<owner>/<repo>/"
+        required: false
+        default: "early"
+
+env:
+  GITHUB_TOKEN: ${{ secrets.ROAMJS_RELEASE_TOKEN }}
+  AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+  AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+  AWS_REGION: ${{ vars.AWS_REGION }}
+  ROAMJS_PROXY: ${{ vars.ROAMJS_PROXY }}
+  GITHUB_APP_ID: 312167
+
+jobs:
+  publish-early-access:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build and publish to early-access channel
+        run: npx samepage build
+        env:
+          GITHUB_REF_NAME: ${{ inputs.channel }}
+
+      - name: Print release URL
+        run: |
+          echo "Early-access base URL:"
+          echo "https://roamjs.com/releases/${{ github.repository }}/${{ inputs.channel }}/"
