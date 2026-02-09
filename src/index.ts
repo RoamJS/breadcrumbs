@@ -434,12 +434,6 @@ export default runExtension(async ({ extensionAPI }) => {
     tabTitle: "Breadcrumbs",
     settings: [
       {
-        id: "enabled",
-        name: "Enable breadcrumbs",
-        description: "Show navigation breadcrumbs in the Roam top bar",
-        action: { type: "switch" },
-      },
-      {
         id: "maxBreadcrumbs",
         name: "Max breadcrumbs",
         description: "Maximum number of previous locations to keep",
@@ -459,10 +453,6 @@ export default runExtension(async ({ extensionAPI }) => {
       },
     ],
   });
-
-  if ((extensionAPI.settings.get("enabled") as boolean | undefined) === false) {
-    return;
-  }
 
   injectStyles();
   getOrCreatePanel();
