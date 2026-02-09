@@ -70,7 +70,8 @@ const deploy = async (): Promise<void> => {
     }
 
     console.log("Deploy completed successfully!");
-    const urlBase = process.env.ROMEJS_RELEASES_BASE_URL || "https://RomeJS.com";
+    const urlBase =
+      process.env.ROAMJS_RELEASES_BASE_URL || "https://roamjs.com";
     const url = `${urlBase}/releases/${resolvedWorkspace}/${resolvedBranch}`;
     console.log(url);
   } catch (error) {
