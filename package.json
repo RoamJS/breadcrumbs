@@ -8,16 +8,24 @@
     "start": "samepage dev",
     "prebuild:roam": "npm install",
     "build:roam": "samepage build --dry",
+    "deploy:vercel": "tsx scripts/deploy-vercel.ts",
+    "publish:one-off": "tsx scripts/publish-one-off.ts",
     "test": "samepage test"
   },
-  "keywords": ["roam", "roam-research", "roamjs"],
+  "keywords": [
+    "roam",
+    "roam-research",
+    "roamjs"
+  ],
   "license": "MIT",
   "dependencies": {
+    "@vercel/blob": "^1.1.1",
     "roamjs-components": "^0.86.4"
   },
   "devDependencies": {
     "prettier": "^3.2.5",
-    "prettier-plugin-tailwindcss": "^0.6.11"
+    "prettier-plugin-tailwindcss": "^0.6.11",
+    "tsx": "^4.20.5"
   },
   "samepage": {
     "extends": "node_modules/roamjs-components/package.json"
