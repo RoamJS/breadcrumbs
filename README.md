@@ -1,6 +1,13 @@
 # Breadcrumbs
 
-RoamJS extension that shows clickable navigation breadcrumbs in the Roam top bar.
+<a href="https://roamjs.com/">
+    <img src="https://avatars.githubusercontent.com/u/138642184" alt="RoamJS Logo" title="RoamJS" align="right" height="60" />
+</a>
+
+**Never lose your place in Roam again. Breadcrumbs adds a clickable trail of your recent pages and blocks in the top bar, so
+you can jump back instantly and navigate your graph with confidence.**
+
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RoamJS/breadcrumbs)
 
 ## Features
 
@@ -12,19 +19,5 @@ RoamJS extension that shows clickable navigation breadcrumbs in the Roam top bar
 
 ## Settings
 
-- `Enable breadcrumbs`: turn the extension on/off
 - `Max breadcrumbs`: max number of prior locations to keep
 - `Truncate length`: max label length before truncation
-
-## Development
-
-```bash
-npm install
-npm start
-```
-
-Build dry-run for Roam:
-
-```bash
-npm run build:roam
-```
