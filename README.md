@@ -1,37 +1,30 @@
-# RoamJS Extension Base
+# Breadcrumbs
 
-Stock base for [RoamJS](https://roamjs.com) Roam Research extensions. **Fork this repo** to start a new extension.
+RoamJS extension that shows clickable navigation breadcrumbs in the Roam top bar.
 
-## What's included
+## Features
 
-- **roamjs-components** — shared utilities, DOM helpers, queries, writes, and UI components
-- **Samepage build** — `samepage build` produces the Roam Depot–ready bundle
-- **Settings panel** — example `extensionAPI.settings.panel.create` with an Enable switch
-- **TypeScript** — tsconfig extending `@samepage/scripts`
-- **CI** — GitHub Actions to build on push/PR (uses RoamJS secrets for publish)
+- Tracks recently visited pages and block locations
+- Renders oldest-to-current breadcrumb trail in the top bar
+- Click any non-current breadcrumb to navigate back
+- Distinguishes pages vs blocks with different styles
+- Supports Blueprint dark mode (`.bp3-dark`)
 
-## After forking
+## Settings
 
-1. **Rename the repo** and update `package.json`:
-   - `name`: your extension slug (e.g. `my-extension`)
-   - `description`: one line describing the extension
+- `Enable breadcrumbs`: turn the extension on/off
+- `Max breadcrumbs`: max number of prior locations to keep
+- `Truncate length`: max label length before truncation
 
-2. **Implement in `src/index.ts`**:
-   - Keep or replace the settings panel
-   - Add your logic using `roamjs-components` (e.g. `createHTMLObserver`, `createBlock`, `renderToast`)
-   - Return `{ unload }` to clean up on unload
+## Development
 
-3. **Optional**: Add React components under `src/components/` (see [autocomplete](https://github.com/RoamJS/autocomplete), [giphy](https://github.com/RoamJS/giphy) for examples).
+```bash
+npm install
+npm start
+```
 
-4. **Secrets (for publish)** — in the forked repo, configure:
-   - `ROAMJS_RELEASE_TOKEN`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-   - `AWS_REGION`, `ROAMJS_PROXY` (vars)
+Build dry-run for Roam:
 
-## Scripts
-
-- `npm start` — samepage dev (local development)
-- `npm run build:roam` — build for Roam (dry run; CI runs `npx samepage build`)
-
-## License
-
-MIT
+```bash
+npm run build:roam
+```
