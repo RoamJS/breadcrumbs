@@ -1,3 +1,4 @@
+import { OnloadArgs } from "roamjs-components/types/native";
 import runExtension from "roamjs-components/util/runExtension";
 
 type LocationType = "page" | "block";
@@ -16,25 +17,6 @@ type BreadcrumbItem = {
 type ExtensionSettings = {
   maxBreadcrumbs: number;
   truncateLength: number;
-};
-
-type SettingsPanelField = {
-  id: string;
-  name: string;
-  description: string;
-  action: {
-    type: string;
-    placeholder?: string;
-  };
-};
-
-type ExtensionAPI = {
-  settings: {
-    get: (key: string) => unknown;
-    panel: {
-      create: (args: { tabTitle: string; settings: SettingsPanelField[] }) => void;
-    };
-  };
 };
 
 const DEFAULT_SETTINGS: ExtensionSettings = {
@@ -68,7 +50,11 @@ const parsePositiveInteger = ({
   return Number.isFinite(parsed) && parsed > 0 ? Math.floor(parsed) : fallback;
 };
 
-const readSettings = ({ extensionAPI }: { extensionAPI: ExtensionAPI }): ExtensionSettings => ({
+const readSettings = ({
+  extensionAPI,
+}: {
+  extensionAPI: OnloadArgs["extensionAPI"];
+}): ExtensionSettings => ({
   maxBreadcrumbs: parsePositiveInteger({
     value: extensionAPI.settings.get("maxBreadcrumbs"),
     fallback: DEFAULT_SETTINGS.maxBreadcrumbs,
@@ -101,7 +87,11 @@ const extractFirstString = ({ result }: { result: unknown }): string | null => {
   return typeof firstValue === "string" ? firstValue : null;
 };
 
-const queryPageTitle = async ({ uid }: { uid: string }): Promise<string | null> => {
+const queryPageTitle = async ({
+  uid,
+}: {
+  uid: string;
+}): Promise<string | null> => {
   const pageResult = await window.roamAlphaAPI.q(`
     [:find ?title
      :where [?e :block/uid "${uid}"]
@@ -111,7 +101,11 @@ const queryPageTitle = async ({ uid }: { uid: string }): Promise<string | null> 
   return extractFirstString({ result: pageResult });
 };
 
-const queryBlockString = async ({ uid }: { uid: string }): Promise<string | null> => {
+const queryBlockString = async ({
+  uid,
+}: {
+  uid: string;
+}): Promise<string | null> => {
   const blockResult = await window.roamAlphaAPI.q(`
     [:find ?string
      :where [?e :block/uid "${uid}"]
@@ -123,7 +117,11 @@ const queryBlockString = async ({ uid }: { uid: string }): Promise<string | null
   return blockString || "(empty block)";
 };
 
-const getBreadcrumbItemByUid = async ({ uid }: { uid: string }): Promise<BreadcrumbItem | null> => {
+const getBreadcrumbItemByUid = async ({
+  uid,
+}: {
+  uid: string;
+}): Promise<BreadcrumbItem | null> => {
   const pageTitle = await queryPageTitle({ uid });
   if (pageTitle) {
     return {
@@ -160,13 +158,25 @@ const stripMarkdown = ({ text }: { text: string }): string =>
     .replace(/#\[\[([^\]]+)\]\]/g, "#$1")
     .trim();
 
-const truncateText = ({ text, maxLength }: { text: string; maxLength: number }): string => {
+const truncateText = ({
+  text,
+  maxLength,
+}: {
+  text: string;
+  maxLength: number;
+}): string => {
   const cleaned = stripMarkdown({ text });
   if (cleaned.length <= maxLength) return cleaned;
   return `${cleaned.slice(0, maxLength - 1)}...`;
 };
 
-const navigateTo = ({ uid, type }: { uid: string; type: LocationType }): void => {
+const navigateTo = ({
+  uid,
+  type,
+}: {
+  uid: string;
+  type: LocationType;
+}): void => {
   if (type === "page") {
     window.roamAlphaAPI.ui.mainWindow.openPage({ page: { uid } });
     return;
@@ -192,10 +202,15 @@ const createBreadcrumbElement = ({
   truncateLength: number;
 }): HTMLSpanElement => {
   const element = document.createElement("span");
-  const typeClass = item.type === "page" ? "breadcrumb-page" : "breadcrumb-block";
+  const typeClass =
+    item.type === "page" ? "breadcrumb-page" : "breadcrumb-block";
 
-  element.className = `breadcrumb-item ${typeClass} ${isCurrent ? "breadcrumb-current" : ""}`.trim();
-  element.textContent = truncateText({ text: item.title, maxLength: truncateLength });
+  element.className =
+    `breadcrumb-item ${typeClass} ${isCurrent ? "breadcrumb-current" : ""}`.trim();
+  element.textContent = truncateText({
+    text: item.title,
+    maxLength: truncateLength,
+  });
   element.title = stripMarkdown({ text: item.title });
   element.style.maxWidth = `${Math.max(truncateLength, 20)}ch`;
 
@@ -242,7 +257,11 @@ const getContentContainer = (): HTMLElement | null => {
   return content instanceof HTMLElement ? content : null;
 };
 
-const renderBreadcrumbs = ({ truncateLength }: { truncateLength: number }): void => {
+const renderBreadcrumbs = ({
+  truncateLength,
+}: {
+  truncateLength: number;
+}): void => {
   const content = getContentContainer();
   if (!content) return;
 
@@ -262,7 +281,9 @@ const renderBreadcrumbs = ({ truncateLength }: { truncateLength: number }): void
       content.appendChild(createSeparatorElement());
     }
 
-    content.appendChild(createBreadcrumbElement({ item, isCurrent, truncateLength }));
+    content.appendChild(
+      createBreadcrumbElement({ item, isCurrent, truncateLength }),
+    );
   });
 };
 
@@ -273,7 +294,9 @@ const updateBreadcrumbHistory = ({
   item: BreadcrumbItem;
   maxBreadcrumbs: number;
 }): void => {
-  breadcrumbHistory = breadcrumbHistory.filter((historyItem) => historyItem.uid !== item.uid);
+  breadcrumbHistory = breadcrumbHistory.filter(
+    (historyItem) => historyItem.uid !== item.uid,
+  );
   breadcrumbHistory.unshift(item);
 
   const maxEntries = maxBreadcrumbs + 1;
@@ -407,9 +430,7 @@ const cleanup = (): void => {
 };
 
 export default runExtension(async ({ extensionAPI }) => {
-  const typedExtensionAPI = extensionAPI as ExtensionAPI;
-
-  typedExtensionAPI.settings.panel.create({
+  extensionAPI.settings.panel.create({
     tabTitle: "Breadcrumbs",
     settings: [
       {
@@ -422,18 +443,24 @@ export default runExtension(async ({ extensionAPI }) => {
         id: "maxBreadcrumbs",
         name: "Max breadcrumbs",
         description: "Maximum number of previous locations to keep",
-        action: { type: "input", placeholder: `${DEFAULT_SETTINGS.maxBreadcrumbs}` },
+        action: {
+          type: "input",
+          placeholder: `${DEFAULT_SETTINGS.maxBreadcrumbs}`,
+        },
       },
       {
         id: "truncateLength",
         name: "Truncate length",
         description: "Maximum breadcrumb label length before truncation",
-        action: { type: "input", placeholder: `${DEFAULT_SETTINGS.truncateLength}` },
+        action: {
+          type: "input",
+          placeholder: `${DEFAULT_SETTINGS.truncateLength}`,
+        },
       },
     ],
   });
 
-  if ((typedExtensionAPI.settings.get("enabled") as boolean | undefined) === false) {
+  if ((extensionAPI.settings.get("enabled") as boolean | undefined) === false) {
     return;
   }
 
@@ -441,12 +468,12 @@ export default runExtension(async ({ extensionAPI }) => {
   getOrCreatePanel();
 
   hashChangeListener = () => {
-    const settings = readSettings({ extensionAPI: typedExtensionAPI });
+    const settings = readSettings({ extensionAPI });
     void handleNavigation(settings);
   };
   window.addEventListener("hashchange", hashChangeListener);
 
-  const settings = readSettings({ extensionAPI: typedExtensionAPI });
+  const settings = readSettings({ extensionAPI });
   await handleNavigation(settings);
 
   return {
