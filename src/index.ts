@@ -197,6 +197,7 @@ const createBreadcrumbElement = ({
   element.className = `breadcrumb-item ${typeClass} ${isCurrent ? "breadcrumb-current" : ""}`.trim();
   element.textContent = truncateText({ text: item.title, maxLength: truncateLength });
   element.title = stripMarkdown({ text: item.title });
+  element.style.maxWidth = `${Math.max(truncateLength, 20)}ch`;
 
   if (!isCurrent) {
     element.addEventListener("click", (event) => {
@@ -331,6 +332,7 @@ const injectStyles = (): void => {
       cursor: pointer;
       transition: background-color 0.15s ease;
       overflow: hidden;
+      white-space: nowrap;
       text-overflow: ellipsis;
       max-width: 200px;
     }
@@ -435,16 +437,16 @@ export default runExtension(async ({ extensionAPI }) => {
     return;
   }
 
-  const settings = readSettings({ extensionAPI: typedExtensionAPI });
-
   injectStyles();
   getOrCreatePanel();
 
   hashChangeListener = () => {
+    const settings = readSettings({ extensionAPI: typedExtensionAPI });
     void handleNavigation(settings);
   };
   window.addEventListener("hashchange", hashChangeListener);
 
+  const settings = readSettings({ extensionAPI: typedExtensionAPI });
   await handleNavigation(settings);
 
   return {
