@@ -9,12 +9,22 @@ const build = (): void => {
 
 const ensureDistStubs = (distPath: string): void => {
   fs.mkdirSync(distPath, { recursive: true });
-  const stubFiles = ["extension.css", "CHANGELOG.md"];
-  for (const stubFile of stubFiles) {
+  const stubFiles: Record<string, string> = {
+    "extension.css": "placeholder",
+    "CHANGELOG.md": "placeholder",
+  };
+  for (const [stubFile, stubContent] of Object.entries(stubFiles)) {
     const stubPath = path.join(distPath, stubFile);
     if (!fs.existsSync(stubPath)) {
-      fs.writeFileSync(stubPath, "");
+      fs.writeFileSync(stubPath, stubContent);
       console.log(`Generated ${stubFile} in dist/`);
+      continue;
+    }
+
+    const stat = fs.statSync(stubPath);
+    if (stat.size === 0) {
+      fs.writeFileSync(stubPath, stubContent);
+      console.log(`Updated empty ${stubFile} in dist/`);
     }
   }
 };
