@@ -1,37 +1,23 @@
-# RoamJS Extension Base
+# Breadcrumbs
 
-Stock base for [RoamJS](https://roamjs.com) Roam Research extensions. **Fork this repo** to start a new extension.
+<a href="https://roamjs.com/">
+    <img src="https://avatars.githubusercontent.com/u/138642184" alt="RoamJS Logo" title="RoamJS" align="right" height="60" />
+</a>
 
-## What's included
+**Never lose your place in Roam again. Breadcrumbs adds a clickable trail of your recent pages and blocks in the top bar, so
+you can jump back instantly and navigate your graph with confidence.**
 
-- **roamjs-components** — shared utilities, DOM helpers, queries, writes, and UI components
-- **Samepage build** — `samepage build` produces the Roam Depot–ready bundle
-- **Settings panel** — example `extensionAPI.settings.panel.create` with an Enable switch
-- **TypeScript** — tsconfig extending `@samepage/scripts`
-- **CI** — GitHub Actions to build on push/PR (uses RoamJS secrets for publish)
+[![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RoamJS/breadcrumbs)
 
-## After forking
+## Features
 
-1. **Rename the repo** and update `package.json`:
-   - `name`: your extension slug (e.g. `my-extension`)
-   - `description`: one line describing the extension
+- Tracks recently visited pages and block locations
+- Renders oldest-to-current breadcrumb trail in the top bar
+- Click any non-current breadcrumb to navigate back
+- Distinguishes pages vs blocks with different styles
+- Supports Blueprint dark mode (`.bp3-dark`)
 
-2. **Implement in `src/index.ts`**:
-   - Keep or replace the settings panel
-   - Add your logic using `roamjs-components` (e.g. `createHTMLObserver`, `createBlock`, `renderToast`)
-   - Return `{ unload }` to clean up on unload
+## Settings
 
-3. **Optional**: Add React components under `src/components/` (see [autocomplete](https://github.com/RoamJS/autocomplete), [giphy](https://github.com/RoamJS/giphy) for examples).
-
-4. **Secrets (for publish)** — in the forked repo, configure:
-   - `ROAMJS_RELEASE_TOKEN`, `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`
-   - `AWS_REGION`, `ROAMJS_PROXY` (vars)
-
-## Scripts
-
-- `npm start` — samepage dev (local development)
-- `npm run build:roam` — build for Roam (dry run; CI runs `npx samepage build`)
-
-## License
-
-MIT
+- `Max breadcrumbs`: max number of prior locations to keep
+- `Truncate length`: max label length before truncation
