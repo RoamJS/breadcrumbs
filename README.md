@@ -1,8 +1,8 @@
-# Breadcrumbs
-
 <a href="https://roamjs.com/">
     <img src="https://avatars.githubusercontent.com/u/138642184" alt="RoamJS Logo" title="RoamJS" align="right" height="60" />
 </a>
+
+# Breadcrumbs
 
 **Never lose your place in Roam again. Breadcrumbs adds a clickable trail of your recent pages and blocks in the top bar, so
 you can jump back instantly and navigate your graph with confidence.**
