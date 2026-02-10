@@ -10,7 +10,7 @@ on:
 
 env:
   BLOB_READ_WRITE_TOKEN: ${{ secrets.ROAMJS_VERCEL_BLOB_READ_WRITE_TOKEN }}
-  ROAMJS_RELEASES_BASE_URL: https://roamJS.com
+  ROAMJS_RELEASES_BASE_URL: https://roamjs.com
 
 jobs:
   deploy:

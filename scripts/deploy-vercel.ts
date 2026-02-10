@@ -7,6 +7,18 @@ const build = (): void => {
   execSync("npx samepage build --dry", { stdio: "inherit" });
 };
 
+const ensureDistStubs = (distPath: string): void => {
+  fs.mkdirSync(distPath, { recursive: true });
+  const stubFiles = ["extension.css", "CHANGELOG.md"];
+  for (const stubFile of stubFiles) {
+    const stubPath = path.join(distPath, stubFile);
+    if (!fs.existsSync(stubPath)) {
+      fs.writeFileSync(stubPath, "");
+      console.log(`Generated ${stubFile} in dist/`);
+    }
+  }
+};
+
 const resolveBranch = (): string =>
   process.env.GITHUB_HEAD_REF ||
   process.env.GITHUB_REF_NAME ||
@@ -38,6 +50,7 @@ const deploy = async (): Promise<void> => {
 
     const resolvedBranch = resolveBranch();
     const distPath = path.join(process.cwd(), "dist");
+    ensureDistStubs(distPath);
     const files = [
       "extension.js",
       "extension.css",
