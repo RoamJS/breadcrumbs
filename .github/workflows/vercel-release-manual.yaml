@@ -1,0 +1,37 @@
+name: Manual - Breadcrumbs Vercel Release Publish
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: "Git ref to deploy (branch, tag, or SHA)"
+        required: false
+        default: "main"
+
+env:
+  BLOB_READ_WRITE_TOKEN: ${{ secrets.ROAMJS_VERCEL_BLOB_READ_WRITE_TOKEN }}
+  ROAMJS_RELEASES_BASE_URL: https://roamJS.com
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ inputs.ref }}
+
+      - name: Setup Node.js environment
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm install
+
+      - name: Build
+        run: npx samepage build --dry
+
+      - name: Deploy
+        run: npm run deploy:vercel -- --no-compile
