@@ -9,7 +9,6 @@
     "prebuild:roam": "npm install",
     "build:roam": "samepage build --dry",
     "deploy:vercel": "tsx scripts/deploy-vercel.ts",
-    "publish:one-off": "tsx scripts/publish-one-off.ts",
     "test": "samepage test"
   },
   "keywords": [
