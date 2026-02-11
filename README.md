@@ -9,8 +9,7 @@ you can jump back instantly and navigate your graph with confidence.**
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RoamJS/breadcrumbs)
 
-<img width="1112" height="543" alt="image" src="https://github.com/user-attachments/assets/bb192b0d-04ad-420f-909d-7dd9be71347c" />
-
+![](https://github.com/user-attachments/assets/bb192b0d-04ad-420f-909d-7dd9be71347c)
 
 ## Features
 
