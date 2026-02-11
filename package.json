@@ -1,6 +1,6 @@
 {
   "name": "breadcrumbs",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Navigation breadcrumbs for Roam Research.",
   "main": "index.js",
   "scripts": {
@@ -11,7 +11,13 @@
     "deploy:vercel": "tsx scripts/deploy-vercel.ts",
     "test": "samepage test"
   },
-  "keywords": ["roam", "roam-research", "roamjs", "breadcrumbs", "navigation"],
+  "keywords": [
+    "roam",
+    "roam-research",
+    "roamjs",
+    "breadcrumbs",
+    "navigation"
+  ],
   "license": "MIT",
   "dependencies": {
     "@vercel/blob": "^1.1.1",
