@@ -1,5 +1,6 @@
 import { OnloadArgs } from "roamjs-components/types/native";
 import runExtension from "roamjs-components/util/runExtension";
+import openBlockInSidebar from "roamjs-components/writes/openBlockInSidebar";
 
 type LocationType = "page" | "block";
 
@@ -170,7 +171,7 @@ const truncateText = ({
   return `${cleaned.slice(0, maxLength - 1)}...`;
 };
 
-const navigateTo = ({
+const openInMainWindow = ({
   uid,
   type,
 }: {
@@ -183,6 +184,23 @@ const navigateTo = ({
   }
 
   window.roamAlphaAPI.ui.mainWindow.openBlock({ block: { uid } });
+};
+
+const navigateTo = ({
+  uid,
+  type,
+  inSidebar,
+}: {
+  uid: string;
+  type: LocationType;
+  inSidebar: boolean;
+}): void => {
+  if (inSidebar) {
+    openBlockInSidebar(uid);
+    return;
+  }
+
+  openInMainWindow({ uid, type });
 };
 
 const createSeparatorElement = (): HTMLSpanElement => {
@@ -213,12 +231,25 @@ const createBreadcrumbElement = ({
   });
   element.title = stripMarkdown({ text: item.title });
   element.style.maxWidth = `${Math.max(truncateLength, 20)}ch`;
+  element.addEventListener("mousedown", (event: MouseEvent) => {
+    if (event.shiftKey) {
+      event.preventDefault();
+    }
+  });
 
   if (!isCurrent) {
-    element.addEventListener("click", (event) => {
+    element.addEventListener("click", (event: MouseEvent) => {
       event.preventDefault();
       event.stopPropagation();
-      navigateTo({ uid: item.uid, type: item.type });
+      if (event.shiftKey) {
+        // handle shift+click selecting text
+        window.getSelection()?.removeAllRanges();
+      }
+      navigateTo({
+        uid: item.uid,
+        type: item.type,
+        inSidebar: event.shiftKey,
+      });
     });
   }
 
@@ -358,6 +389,8 @@ const injectStyles = (): void => {
       white-space: nowrap;
       text-overflow: ellipsis;
       max-width: 200px;
+      user-select: none;
+      -webkit-user-select: none;
     }
 
     .breadcrumb-item:hover:not(.breadcrumb-current) {

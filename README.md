@@ -16,6 +16,7 @@ you can jump back instantly and navigate your graph with confidence.**
 - Tracks recently visited pages and block locations
 - Renders oldest-to-current breadcrumb trail in the top bar
 - Click any non-current breadcrumb to navigate back
+- Shift+click any non-current breadcrumb to open in the right sidebar
 - Distinguishes pages vs blocks with different styles
 - Supports Blueprint dark mode (`.bp3-dark`)
 
