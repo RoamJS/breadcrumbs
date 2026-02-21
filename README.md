@@ -8,6 +8,7 @@
 you can jump back instantly and navigate your graph with confidence.**
 
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/RoamJS/breadcrumbs)
+[![Slack](https://img.shields.io/badge/Slack-%23roam--js-purple)](https://roamresearch.slack.com/archives/C016N2B66JU)
 
 ![](https://github.com/user-attachments/assets/bb192b0d-04ad-420f-909d-7dd9be71347c)
 
