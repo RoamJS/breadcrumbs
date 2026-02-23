@@ -29,5 +29,4 @@ you can jump back instantly and navigate your graph with confidence.**
 ## Acknowledgements
 
 - Hat tip to [Joel Chan](https://github.com/joelchan) for the original Breadcrumbs extension work.
-- Previous repository: [joelchan/roam-breadcrumbs-extension](https://github.com/joelchan/roam-breadcrumbs-extension)
 - Credit for prompting and testing support in this fork.
