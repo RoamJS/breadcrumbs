@@ -25,3 +25,9 @@ you can jump back instantly and navigate your graph with confidence.**
 
 - `Max breadcrumbs`: max number of prior locations to keep
 - `Truncate length`: max label length before truncation
+
+## Acknowledgements
+
+- Hat tip to [Joel Chan](https://github.com/joelchan) for the original Breadcrumbs extension work.
+- Previous repository: [joelchan/roam-breadcrumbs-extension](https://github.com/joelchan/roam-breadcrumbs-extension)
+- Credit for prompting and testing support in this fork.
