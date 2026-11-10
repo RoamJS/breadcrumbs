@@ -1,6 +1,7 @@
 import { OnloadArgs } from "roamjs-components/types/native";
 import runExtension from "roamjs-components/util/runExtension";
 import openBlockInSidebar from "roamjs-components/writes/openBlockInSidebar";
+import getOrCreatePanel from "~/getOrCreatePanel";
 
 type LocationType = "page" | "block";
 
@@ -31,7 +32,6 @@ const UI_IDS = {
 } as const;
 
 const UI_SELECTORS = {
-  topbar: ".rm-topbar",
   content: ".breadcrumbs-content",
 } as const;
 
@@ -254,30 +254,6 @@ const createBreadcrumbElement = ({
   }
 
   return element;
-};
-
-const getOrCreatePanel = (): HTMLElement | null => {
-  const existingPanel = document.getElementById(UI_IDS.panel);
-  if (existingPanel instanceof HTMLElement) return existingPanel;
-
-  const topbar = document.querySelector(UI_SELECTORS.topbar);
-  if (!(topbar instanceof HTMLElement)) return null;
-
-  const panel = document.createElement("div");
-  panel.id = UI_IDS.panel;
-
-  const content = document.createElement("div");
-  content.className = "breadcrumbs-content";
-  panel.appendChild(content);
-
-  const firstChild = topbar.firstChild;
-  if (firstChild?.nextSibling) {
-    topbar.insertBefore(panel, firstChild.nextSibling);
-    return panel;
-  }
-
-  topbar.appendChild(panel);
-  return panel;
 };
 
 const getContentContainer = (): HTMLElement | null => {
